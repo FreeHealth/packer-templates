@@ -25,7 +25,7 @@ Do not add a final slash to your path. Use full path from / (no ~).
 
 Clone the repository:
 
-    $ git clone https://github.com/kaorimatz/packer-templates && cd packer-templates
+    $ git clone https://github.com/FreeHealth/packer-templates.git && cd packer-templates
 
 Build a machine image from the template in the repository:
 
@@ -35,7 +35,14 @@ A new file ubuntu-17.10-amd64-virtualbox.box will appear in the current folder.
 
 Add the built box to Vagrant:
 
-    $ vagrant box add archlinux-x86_64 ubuntu-17.10-amd64-virtualbox.box
+    $ vagrant box add ubuntu-17.10-amd64 ubuntu-17.10-amd64-virtualbox.box
+
+Start the VM:
+
+   $ cd vagrantfiles/ubuntu-17.10
+   $ vagrant up
+
+The headless VM should be running, you can check the VirtualBox GUI manager.
 
 ## Configuration
 
