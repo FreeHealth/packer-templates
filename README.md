@@ -4,7 +4,24 @@
 
 [Packer](https://www.packer.io/) templates for [Vagrant](https://www.vagrantup.com/) base boxes
 
+Fork of https://github.com/kaorimatz/packer-templates
+
+Diff summary:
+
+  * Ubuntu 17.10 added (json & preseed)
+  * ISO url scheme for Ubuntu slightly modified ( /XX.XX version path is included in the default value for the mirror variable for each json file)
+
 ## Usage
+Each modfication of the json file defining a build leads to downloading the
+complete iso once again. The iso file is not cached.
+
+If you plan to make adjustments to the json file, it is recommended to download
+the iso file of the distribution and to add the path leading to the iso to your
+packer build command:
+
+    $ packer build -only=virtualbox-iso -var mirror=/path/to/iso/folder ubuntu-17.10-amd64.json
+
+Do not add a final slash to your path. Use full path from / (no ~).
 
 Clone the repository:
 
@@ -12,11 +29,13 @@ Clone the repository:
 
 Build a machine image from the template in the repository:
 
-    $ packer build -only=virtualbox-iso archlinux-x86_64.json
+    $ packer build -only=virtualbox-iso ubuntu-17.10-amd64.json
+
+A new file ubuntu-17.10-amd64-virtualbox.box will appear in the current folder.
 
 Add the built box to Vagrant:
 
-    $ vagrant box add archlinux-x86_64 archlinux-x86_64-virtualbox.box
+    $ vagrant box add archlinux-x86_64 ubuntu-17.10-amd64-virtualbox.box
 
 ## Configuration
 
@@ -29,16 +48,10 @@ You can configure each template to match your requirements by setting the follow
  `disk_size`         | 40000         | [Documentation](https://packer.io/docs/builders/virtualbox-iso.html#disk_size)
  `headless`          | 0             | [Documentation](https://packer.io/docs/builders/virtualbox-iso.html#headless)
  `memory`            | 512           | Memory size in MB
- `mirror`            |               | A URL of the mirror where the ISO image is available
+ `mirror`            |               | A URL of the mirror (or a full path to the folder) where the ISO image is available
 
 ### Example
 
 Build an uncompressed Arch Linux vagrant box with a 4GB hard disk using the VirtualBox provider:
 
     $ packer build -only=virtualbox-iso -var compression_level=0 -var disk_size=4000 archlinux-x86_64.json
-
-## Pre-built Boxes
-
-You can also use the pre-built boxes hosted on [Atlas](https://atlas.hashicorp.com/kaorimatz).
-
-    $ vagrant box add kaorimatz/archlinux-x86_64
